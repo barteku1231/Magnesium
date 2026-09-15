@@ -1,0 +1,26 @@
+name: Build Magnesium DLL
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build Solution
+      run: msbuild Magnesium.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Upload Magnesium DLL
+      uses: actions/upload-artifact@v4
+      with:
+        name: Magnesium-x64-Release
+        path: |
+          **/Release/*.dll
+          **/x64/Release/*.dll
